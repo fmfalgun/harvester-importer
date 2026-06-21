@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>harvester-importer — Community Intel Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-brand">HARVESTER-IMPORTER</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="intel-board.html" class="nav-active">Intel Board</a></li>
+      <li><a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer">GitHub ↗</a></li>
+      <li><a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Portfolio ↗</a></li>
+    </ul>
+  </nav>
+
+  <div class="hof-subheader">
+    <span id="ib-stats">— domains · — scans indexed</span>
+  </div>
+
+  <div id="error-box"><span id="error-message"></span></div>
+
+  <main id="main">
+
+    <div id="ib-disclaimer">
+      <span class="disclaimer-icon">⚠</span>
+      All entries below were submitted via <code>harvester-importer --submit</code>.
+      Submitters acknowledged their scan would be publicly listed here.
+      <strong>Only query domains you have permission to enumerate.</strong>
+    </div>
+
+    <div id="ib-howto">
+      <span class="howto-label">[ // ADD YOUR DOMAIN ]</span>
+      <code class="howto-cmd">python3 harvester-importer.py -d yourdomain.com -f results.json --submit</code>
+      <a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer" class="howto-link">→ GitHub ↗</a>
+    </div>
+
+    <div id="search-row">
+      <input id="search-input" type="text" placeholder="filter domains..." autocomplete="off" spellcheck="false">
+      <span id="search-count"></span>
+    </div>
+
+    <div id="domain-list"></div>
+
+  </main>
+
+  <footer class="site-footer">
+    Built by <a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Falgun Marothia</a>
+    &middot; <a href="index.html">← Home</a>
+    &middot; refreshed monthly by GitHub Actions
+  </footer>
+
+  <script src="assets/js/intel-board.js"></script>
+
+</body>
+</html>

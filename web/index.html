@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>harvester-importer — theHarvester Intel Importer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-brand">HARVESTER-IMPORTER</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-active">Home</a></li>
+      <li><a href="intel-board.html">Intel Board</a></li>
+      <li><a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer">GitHub ↗</a></li>
+      <li><a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Portfolio ↗</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <h1>Harvester <span>Importer</span></h1>
+    <p class="tagline">Import theHarvester output · normalize intel · map email/host/IP surface</p>
+    <div class="install-block">
+      <code class="install-cmd">python3 harvester-importer.py -d target.com -f results.json</code>
+    </div>
+    <div class="hero-cta-row">
+      <a href="intel-board.html" class="cta-btn">→ Intel Board</a>
+      <a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer" class="cta-ghost">GitHub ↗</a>
+    </div>
+  </section>
+
+  <div class="layout">
+
+    <aside class="info-panel">
+
+      <div class="panel">
+        <div class="panel-heading">&gt; WHAT IS THEHARVESTER</div>
+        <div class="panel-body">
+          <p>theHarvester is an OSINT tool by Christian Martorella. It scrapes emails, subdomains, and IPs from public sources: search engines (Google, Bing, Baidu), certificate transparency logs (crt.sh), passive DNS, shodan, LinkedIn, and more.</p>
+          <p>Running <code>theHarvester -d target.com -b all -f results</code> produces results.json — a flat array of raw intel: emails[], hosts[], ips[] aggregated from all sources, no deduplication, no formatting.</p>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-heading">&gt; WHY THIS SCRIPT</div>
+        <div class="panel-body">
+          <p>The raw theHarvester JSON has problems:</p>
+          <ul class="panel-list-plain">
+            <li>No deduplication (same email from 3 sources appears 3 times)</li>
+            <li>IPs mixed into the hosts[] array</li>
+            <li>No counts — you can't quickly see "how many unique emails?"</li>
+            <li>No structured output for downstream tools</li>
+          </ul>
+          <p>What this script adds:</p>
+          <ul class="panel-list">
+            <li>Deduplicates and sorts emails, hosts, IPs</li>
+            <li>Separates IP addresses from hostnames</li>
+            <li>Counts: email_count, host_count, ip_count, source_count</li>
+            <li>SQLite cache — repeat imports instant (24h TTL)</li>
+            <li>Structured JSON for piping to httprobe, subfinder, etc.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-heading">&gt; HOW IT WORKS</div>
+        <div class="panel-body">
+          <div class="arch-diagram">
+            <div class="input-box">python3 harvester-importer.py -d target.com -f results.json</div>
+            <div class="arch-arrow">▼</div>
+            <div class="engine-box">
+              PARSE + NORMALIZE
+              <span class="arch-sub">dedup · split IPs from hosts · count</span>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-cache">
+              <span class="cache-label">SQLITE CACHE (cache.db)</span>
+              <span class="cache-sub">fresh (&lt;24h)? serve instantly
+stale? re-read input file</span>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="output-box">
+              NORMALIZED INTEL
+              <span class="arch-sub">email_count · host_count · ip_count · source_count</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+    <div class="home-main">
+
+      <div class="panel">
+        <div class="panel-heading">&gt; USAGE</div>
+        <div class="panel-body">
+          <div class="code-block">
+            <span class="code-comment"># basic import — results printed + cached</span>
+            <pre>python3 harvester-importer.py -d target.com -f results.json</pre>
+            <span class="code-comment"># save normalized JSON to file</span>
+            <pre>python3 harvester-importer.py -d target.com -f results.json -o normalized.json</pre>
+            <span class="code-comment"># specify which sources you used (shows on Intel Board)</span>
+            <pre>python3 harvester-importer.py -d target.com -f results.json --sources "crtsh,baidu,bing"</pre>
+            <span class="code-comment"># submit to community Intel Board</span>
+            <pre>python3 harvester-importer.py -d target.com -f results.json --submit</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-heading">&gt; OUTPUT SCHEMA</div>
+        <div class="panel-body">
+          <div class="code-block">
+            <pre class="code-pre">{
+  "domain":       "nmap.org",
+  "queried_at":   "2026-06-21T00:00:00Z",
+  "email_count":  4,
+  "host_count":   11,
+  "ip_count":     3,
+  "source_count": 4,
+  "emails":  ["fyodor@insecure.org", "nmap-dev@insecure.org", "..."],
+  "hosts":   ["nmap.org", "shop.nmap.org", "svn.nmap.org", "..."],
+  "ips":     ["45.33.32.156", "45.33.49.119", "..."],
+  "sources": ["certspotter", "crtsh", "hackertarget", "..."]
+}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="hof-cta-card">
+        <div class="hof-cta-label">[ // INTEL BOARD ]</div>
+        <p class="hof-cta-desc">Every domain imported with --submit is indexed here. Browse community harvester runs — email counts, host surfaces, IP ranges — no tool required.</p>
+        <a href="intel-board.html" class="cta-btn">→ Open Intel Board</a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <footer class="site-footer">
+    Built by <a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Falgun Marothia</a>
+    &middot; data from public OSINT sources
+    &middot; <a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+  </footer>
+
+</body>
+</html>

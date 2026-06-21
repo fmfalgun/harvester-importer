@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>harvester-importer — domain detail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-brand">HARVESTER-IMPORTER</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="intel-board.html" class="nav-active">Intel Board</a></li>
+      <li><a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer">GitHub ↗</a></li>
+      <li><a href="https://fmfalgun.github.io" target="_blank" rel="noopener noreferrer">Portfolio ↗</a></li>
+    </ul>
+  </nav>
+
+  <div class="domain-header">
+    <span id="domain-name-display" class="domain-name-display">—</span>
+    <span id="contributor-meta" class="domain-contributor"></span>
+  </div>
+
+  <div id="error-box"><span id="error-message"></span></div>
+
+  <section id="stats-row" class="stats-row">
+    <div class="stat-badge">
+      <span class="stat-value" id="val-email-count">&mdash;</span>
+      <span class="stat-label">Emails Found</span>
+    </div>
+    <div class="stat-badge">
+      <span class="stat-value" id="val-host-count">&mdash;</span>
+      <span class="stat-label">Hosts Found</span>
+    </div>
+    <div class="stat-badge">
+      <span class="stat-value" id="val-ip-count">&mdash;</span>
+      <span class="stat-label">IPs Found</span>
+    </div>
+    <div class="stat-badge">
+      <span class="stat-value" id="val-source-count">&mdash;</span>
+      <span class="stat-label">Sources Used</span>
+    </div>
+  </section>
+
+  <main id="results">
+
+    <p id="queried-at-line">data as of <span id="queried-at">&mdash;</span></p>
+
+    <section class="result-section section" id="section-emails">
+      <h2 class="section-title emails">[ // EMAILS ]</h2>
+      <div class="entry-list" id="list-emails"></div>
+    </section>
+
+    <section class="result-section section" id="section-hosts">
+      <h2 class="section-title hosts">[ // HOSTS ]</h2>
+      <div class="entry-list" id="list-hosts"></div>
+    </section>
+
+    <section class="result-section section" id="section-ips">
+      <h2 class="section-title ips">[ // IP ADDRESSES ]</h2>
+      <div class="entry-list" id="list-ips"></div>
+    </section>
+
+    <section class="result-section section" id="section-sources">
+      <h2 class="section-title sources">[ // SOURCES USED ]</h2>
+      <div class="entry-list" id="list-sources"></div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <a href="intel-board.html">← intel board</a>
+    &middot; <a href="index.html">home</a>
+    &middot; <a href="https://github.com/fmfalgun/harvester-importer" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    &middot; refreshed monthly by GitHub Actions
+  </footer>
+
+  <script src="assets/js/domain.js"></script>
+
+</body>
+</html>

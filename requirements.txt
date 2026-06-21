@@ -1,0 +1,11 @@
+# stdlib only — no pip dependencies for harvester-importer itself.
+#
+# theHarvester (required separately for data collection):
+#   pipx install theharvester
+#   OR: pip install theHarvester
+#
+# Workflow:
+#   1. theHarvester -d target.com -b all -f results
+#   2. python3 harvester-importer.py -d target.com -f results.json
+#
+# System requirements: Python 3.8+

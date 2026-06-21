@@ -1,0 +1,78 @@
+name: Monthly Intel Refresh
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Report intel age and update index
+        shell: python3 {0}
+        run: |
+          import json, sys
+          from pathlib import Path
+          from datetime import datetime, timezone, timedelta
+
+          CUTOFF_DAYS = 90
+          now     = datetime.now(timezone.utc)
+          cutoff  = now - timedelta(days=CUTOFF_DAYS)
+          now_str = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+          index_file = Path("web/data/index.json")
+          if not index_file.exists():
+              print("[i] No index.json — nothing to report.")
+              sys.exit(0)
+
+          with open(index_file) as f:
+              index = json.load(f)
+
+          domains = index.get("domains", [])
+          active  = 0
+          stale   = 0
+
+          for entry in domains:
+              last_str = entry.get("last_refreshed") or entry.get("queried_at", "")
+              try:
+                  last_dt = datetime.fromisoformat(last_str.replace("Z", "+00:00"))
+                  if last_dt < cutoff:
+                      stale += 1
+                  else:
+                      active += 1
+              except Exception:
+                  stale += 1
+
+          print(f"[+] Intel age report:")
+          print(f"    ACTIVE (<{CUTOFF_DAYS}d): {active} domains")
+          print(f"    STALE  (>{CUTOFF_DAYS}d): {stale} domains")
+          print()
+          print("[i] NOTE: harvester-importer does not support automated intel refresh.")
+          print("          theHarvester requires live queries and API keys.")
+          print("          Users must re-submit with --submit to update their entry.")
+
+          # Only update the generated_at timestamp
+          index["generated_at"] = now_str
+          with open(index_file, "w") as f:
+              json.dump(index, f, indent=2)
+          print(f"\n[+] Updated index generated_at → {now_str}")
+
+      - name: Commit index update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add web/data/index.json
+          git diff --staged --quiet || (git commit -m "[data] monthly index refresh [skip ci]" && git push)
