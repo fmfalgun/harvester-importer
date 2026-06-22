@@ -1,18 +1,18 @@
 {
-  "generated_at":  "2026-06-21T00:00:00Z",
+  "generated_at": "2026-06-22T07:28:06Z",
   "total_domains": 1,
-  "total_scans":   1,
+  "total_scans": 2,
   "domains": [
     {
-      "domain":         "nmap.org",
-      "display_name":   "fmfalgun",
-      "display_loc":    "Chennai, India",
-      "queried_at":     "2026-06-21T00:00:00Z",
-      "last_refreshed": "2026-06-21T00:00:00Z",
-      "email_count":    4,
-      "host_count":     11,
-      "ip_count":       3,
-      "source_count":   4
+      "domain": "nmap.org",
+      "display_name": "fmfalgun",
+      "display_loc": "Chennai, India",
+      "queried_at": "2026-06-22T07:28:06Z",
+      "last_refreshed": "2026-06-22T07:28:06Z",
+      "email_count": 4,
+      "host_count": 11,
+      "ip_count": 3,
+      "source_count": 4
     }
   ]
 }
