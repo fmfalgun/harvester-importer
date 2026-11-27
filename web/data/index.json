@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-11-26T10:34:37Z",
+  "generated_at": "2026-11-27T10:38:07Z",
   "total_domains": 1,
-  "total_scans": 159,
+  "total_scans": 160,
   "domains": [
     {
       "domain": "nmap.org",
       "display_name": "fmfalgun",
       "display_loc": "Chennai, India",
-      "queried_at": "2026-11-26T10:34:37Z",
-      "last_refreshed": "2026-11-26T10:34:37Z",
+      "queried_at": "2026-11-27T10:38:07Z",
+      "last_refreshed": "2026-11-27T10:38:07Z",
       "email_count": 4,
       "host_count": 11,
       "ip_count": 3,
